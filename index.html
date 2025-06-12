@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogadores Maple Leafs</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; padding: 20px; 
+ 
+      font-family: Arial, sans-serif;
+      background: #6790ba;
+      padding: 2vh;
+      text-align: center;
+    }
+
+    
+        h1 {
+          color: white;
+        }
+
+        #btn, .btn {
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 8px;
+      background-color: #00205B;   
+      color: #fff;                 
+      border: 2px solid #041E42;   
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: none;
+      cursor: url('https://ssl.gstatic.com/onebox/media/sports/logos/jMSyNOMdJPjHwsmbWukUag_48x48.png') 16 16, auto;
+    }
+
+    #btn:hover {
+      background-color: #0051BA; 
+      transform: scale(1.05);
+    }
+
+#btn:active {
+  transform: scale(0.98);
+}
+
+   #res {
+      display: flex;
+      flex-wrap: nowrap;     
+      justify-content: center; 
+      gap: 20px;            
+      margin-top: 1vh;
+   }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+      width: 220px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .card h2 {
+      margin: 10px 0 5px 0;
+    }
+    .card p {
+      margin: 5px 0;
+      color: #555;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+  
+  
+  </style>
+</head>
+<body>
+
+  <h1>Jogadores do Toronto Maple Leafs</h1>
+  <button id="btn">Mostrar Próximo Jogador</button>
+  <div id="res" class="cards"></div>
+  <div id="meu-alerta" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); background: #6790ba; color:white; padding:15px 30px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:1000;">
+  <span id="msg-alerta"></span>
+  <button  class="btn" onclick="document.getElementById('meu-alerta').style.display='none'" style="margin-left:20px;">Fechar</button>
+  </div>
+
+  <script>
+    let cards = []; 
+    let index = 0;  
+    function mostrarAlerta(msg) {
+        document.getElementById('msg-alerta').textContent = msg;
+         document.getElementById('meu-alerta').style.display = 'block';
+
+      
+      }
+
+
+    fetch("https://jogadores-maple-leafs.vercel.app/")
+      .then(resp => resp.text())
+      .then(html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+
+        cards = Array.from(temp.querySelectorAll('.card'));
+      })
+      .catch(err => {
+        alert("Erro ao buscar jogadores: " + err);
+      });
+
+    document.getElementById('btn').addEventListener('click', () => {
+      if (index < cards.length) {
+        const res = document.getElementById('res');
+        res.appendChild(cards[index]);
+        index++;
+      } else {
+        
+        mostrarAlerta("Todos jogadores já foram carregados")
+      }
+    });
+  </script>
+
+</body>
+</html>
